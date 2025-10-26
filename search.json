@@ -1,0 +1,162 @@
+[
+  {
+    "objectID": "Python/index.html",
+    "href": "Python/index.html",
+    "title": "Python Programming",
+    "section": "",
+    "text": "Back to top"
+  },
+  {
+    "objectID": "Python/core_python.html",
+    "href": "Python/core_python.html",
+    "title": "Pyodide in Quarto HTML Documents",
+    "section": "",
+    "text": "Back to top"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "SciComp.py",
+    "section": "",
+    "text": "print(2+2)\n\n4\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Home",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Pyodide in Quarto HTML Documents",
+    "section": "",
+    "text": "This is a pyodide-enabled code cell in a Quarto HTML document.\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "LinearAlgebra/index.html",
+    "href": "LinearAlgebra/index.html",
+    "title": "Linear Algebra",
+    "section": "",
+    "text": "Back to top",
+    "crumbs": [
+      "Home",
+      "Linear Algebra"
+    ]
+  },
+  {
+    "objectID": "Python/functional.html",
+    "href": "Python/functional.html",
+    "title": "Functional Programming",
+    "section": "",
+    "text": "Functions are the first-class objects, which means you can do anything with a function that can be done with “data”. This shifts the programming focus to “what” is to be computed rather than “how” is it to be computed. As a first-class object, functions can be - passed as arguments to other functions, - returned from functions, - stored in variables and data structures and - built at run time.\nIt allows many functional programming design patterns such as:\n# Functions can be passed as a function and returned as a function\ndef derivate (f, dx=1e-5):\n    def _(x):\n        return (f(x+dx) - f(x))/dx\n    return _\n\ndef f(x): return x**2 - 2*x + 3\n\n# function stored as a variable, similarly can be stored in a list or dictionary\ndf = derivate(f)   # 2x - 2\n\ndf(1), df(2), df(3), df(5)  # 0, 2, 4,\n\n(1.000000082740371e-05, 2.00001000001393, 4.000009999938214, 8.00000999952033)\n# function in Hash-table, Dictionary similarly it can be stored in a list\nimport math\ndispatchTable = {\n    \"sin\": math.sin,\n    \"cos\": math.cos,\n    \"exp\": math.exp,\n    \"tan\": math.tan,\n    \"fun\": lambda x: 10.2 * x - 5.0,\n    \"f\": f,\n    \"df\": df\n    }\ndispatchTable[\"fun\"](2)\n\n15.399999999999999",
+    "crumbs": [
+      "Home",
+      "Python",
+      "Core Python",
+      "Functional Programming"
+    ]
+  },
+  {
+    "objectID": "Python/functional.html#pure-functions",
+    "href": "Python/functional.html#pure-functions",
+    "title": "Functional Programming",
+    "section": "Pure Functions",
+    "text": "Pure Functions\nA pure function is a function which returns identical values without any side effects. For same input, the function always returns the same output being fully determined by only its arguments and not relying on any global variables or internal state, also the data passed remains unchanged. (i.e no variation with local static variables, non-local variables, mutable reference arguments or input statements). Hence, pure functions are stateless and deterministic (predictable) eg. mathematical functions. This allows the functions to be easily chained or composed together, ran in parallel, multi-thread, multi-core, GPU and distributed systems and also easier to debug and test. Whereas impure functions generally maintain a hidden state or access some global variables, and doesn’t always have the same output for the same input. eg: functions used for IO (print, write file,…)\nWe can try different strategy to purify a function, - pass the external variable to the function. - If functions modifies a list, create a copy of the list and modify the copy and return the copy instead.\n\ndef min(x, y): return x if (x &lt; y) else y  # pure function\n\nz = min(5,4)\n\ndef myMul(x): return z*x   # impure, depends on z for computation\ndef pureMul(x,z): return z*x  # purifying myMul\n\nmyMul(3)\n\n12\n\n\nAbsence of side-effects in pure functions allows Referential Transparency, which means that any sub-expression can be replaced by its value within an expression at any time without changing the evaluation of the whole expression. It can be basically stated as “replace equals by equals”. This allows program transformation, manipulation and equational reasoning. This allows computations to be safely distributed over multiple processors/threads. Furthermore, previously evaluated expressions can be memoized.\nFunctions utilizing global variables may violated referential transparency (aka referential opacity), eg: counters, random number generators. rand() + rand() != 2 * rand()\n\ndef square (x): return x * x\n\nsquare (3) + square (3) == 2 * square (3)  # Referential transparency\n\n# Referential opacity due to global state side-effects\nstate =  1\n\ndef counter():\n  global state\n  state += 1\n  return state\n\ncounter() + counter() == 2 * counter() \n\nFalse",
+    "crumbs": [
+      "Home",
+      "Python",
+      "Core Python",
+      "Functional Programming"
+    ]
+  },
+  {
+    "objectID": "Python/functional.html#closure",
+    "href": "Python/functional.html#closure",
+    "title": "Functional Programming",
+    "section": "Closure",
+    "text": "Closure\nClosure is a function that remembers the environment at which it was created, and access variables in that scope (i.e lexically scoped name binding)\n\ndef make_adder(x):\n    def adder(y):\n        return x + y\n    return adder\n\nadd5 = make_adder(5)\nadd5(4)\n\n9\n\n\n\n# Mutable state with closure\nidx = 100 \n \ndef make_counter():\n    idx = -1    \n    def _():\n        nonlocal idx\n        idx = idx + 1\n        return idx    \n    return _\n\ncounter1 = make_counter()\nprint(counter1(), counter1())\ndel make_counter\ncounter1()\n\n0 1\n\n\n2",
+    "crumbs": [
+      "Home",
+      "Python",
+      "Core Python",
+      "Functional Programming"
+    ]
+  },
+  {
+    "objectID": "Python/functional.html#lambda-functions-anonymous-functions",
+    "href": "Python/functional.html#lambda-functions-anonymous-functions",
+    "title": "Functional Programming",
+    "section": "Lambda Functions/ Anonymous Functions",
+    "text": "Lambda Functions/ Anonymous Functions",
+    "crumbs": [
+      "Home",
+      "Python",
+      "Core Python",
+      "Functional Programming"
+    ]
+  },
+  {
+    "objectID": "Python/functional.html#currying-and-partial-applications",
+    "href": "Python/functional.html#currying-and-partial-applications",
+    "title": "Functional Programming",
+    "section": "Currying and Partial Applications",
+    "text": "Currying and Partial Applications\nCurrying is the decomposition of a function of multiples arguments in a chained sequence of functions of a single argument. The name currying comes from the mathematician Haskell Curry who developed the concept of curried functions. Curried functions can take one argument at a time and a uncurried function must have all arguments passed at once.\nA function of multiple arguments is converted into a new function that takes fewer arguments, some arguments are supplied and returns function with signature consisting of remaining arguments. Partially applied functions must not be confused with currying.\n\ndef f(x, y, z): return 10*x - 2*y - z  # uncurried\n\ncurried_f = lambda x: lambda y: lambda z: 10*x - 3*y -z\n\nf(3,4, 5) == curried_f(3)(4)(5)\n\npartial_f = curried_f(1)(1)\n\npartial_f(5) \n\n2\n\n\n\nfrom functools import partial\n\nf_yz = partial(f, 2)  # 20 - 2y - z\nf_yz(3,4)\n\n10",
+    "crumbs": [
+      "Home",
+      "Python",
+      "Core Python",
+      "Functional Programming"
+    ]
+  },
+  {
+    "objectID": "Python/functional.html#function-composition",
+    "href": "Python/functional.html#function-composition",
+    "title": "Functional Programming",
+    "section": "Function Composition",
+    "text": "Function Composition",
+    "crumbs": [
+      "Home",
+      "Python",
+      "Core Python",
+      "Functional Programming"
+    ]
+  },
+  {
+    "objectID": "Python/functional.html#higher-order-functions-or-functionals-or-operators",
+    "href": "Python/functional.html#higher-order-functions-or-functionals-or-operators",
+    "title": "Functional Programming",
+    "section": "Higher-Order Functions or functionals or operators",
+    "text": "Higher-Order Functions or functionals or operators\nHigher-order function are functions that takes a function as an argument and/or return a function as a result. All other functions are called first-order functions.\nmap, filter and reduce (fold left) are ubiquitous higher-order functions - map :applies a function to each element of a sequence: list, vector, hash map or dictionary and trees. -\n\n# Map\nlist(map(math.sqrt, [4, 9, 16]))  # list function of map operates through recursion, Python doesn't have TCO hence avoid recursion\n\n[math.sqrt(x) for x in [4,9,16] ]  # strict map\n\n# native map is faster as it is implemented in C\ndef lazy_map (f, xs): \n    for x in xs:\n        yield f(x)\n\ng = lazy_map (math.sqrt, [1, 4, 9])\nnext(g), next(g)\n\n(1.0, 2.0)\n\n\n\n# Filter\n\ng = filter (lambda x: x &gt; 10, [1, 20, 3, 40, 4, 14, 8])\n\n[x for x in g]\n\n\n### strict Filter\n_filter = lambda f, xs: list(filter(f, xs))\n\n_filter (lambda x: x &gt; 10,  [1, 20, 3, 40, 4, 14, 8])\n\n\n[20, 40, 14]\n\n\n\n# Reduce\n\nHigh Order Functions Data Immutability Pattern Matching Lists are the fundamental data Structure\nNon Essential Features:\nStatic Typing Type Inference Algebraic Data Types",
+    "crumbs": [
+      "Home",
+      "Python",
+      "Core Python",
+      "Functional Programming"
+    ]
+  },
+  {
+    "objectID": "Python/functional.html#recursion",
+    "href": "Python/functional.html#recursion",
+    "title": "Functional Programming",
+    "section": "Recursion",
+    "text": "Recursion",
+    "crumbs": [
+      "Home",
+      "Python",
+      "Core Python",
+      "Functional Programming"
+    ]
+  },
+  {
+    "objectID": "Python/functional.html#tail-call-optimization-and-tail-recursive-functions",
+    "href": "Python/functional.html#tail-call-optimization-and-tail-recursive-functions",
+    "title": "Functional Programming",
+    "section": "Tail Call Optimization and Tail Recursive Functions",
+    "text": "Tail Call Optimization and Tail Recursive Functions\nA tail call is a function call which is the last action performed by a function.\nTail Call Optimization (TCO) or tail call elimination (TCE) or tail recursion elimination (TRE) replaces tail calls with jumps that guarantess that loops implemented using recursion are executed in constant stack space. Schinz M. and Odersky M. - 2001. Without tail call optimization each recursive call creates a new stack frame by growing the execution stack. Eventually the stack runs out of space and the program has to stop. To support iteration by recursion functional languages need tail call optimization. Schwaighofer A. 2009.\nPython doesn’t have TCO Support. To perform recursion safely a language must support TCO - Tail Call Optimization. Even if there is TCO support a non tail recursive function can lead to an unexpected stack overflow. Recursion allow greater expressiveness and many algorithms are better expressed with recursion. Recursion must be replaced by loops constructs in languages that doesn’t support TCO.\nhttps://github.com/caiorss/Functional-Programming/blob/master/haskell/Functional_Programming_Concepts.org\nhttps://github.com/sfermigier/awesome-functional-python\nhttps://github.com/PacktPublishing/Functional-Python-Programming-Second-Edition",
+    "crumbs": [
+      "Home",
+      "Python",
+      "Core Python",
+      "Functional Programming"
+    ]
+  }
+]
